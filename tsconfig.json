@@ -19,11 +19,7 @@
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
+    // paths alias 제거 - 사용하지 않음
     "allowImportingTsExtensions": true,
     "noEmit": true
   }
