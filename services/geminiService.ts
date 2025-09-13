@@ -1,13 +1,23 @@
 
 import { GoogleGenAI, Modality, GenerateContentResponse } from "@google/genai";
 
-const API_KEY = process.env.API_KEY;
+// Lazy init: 페이지 로드시 즉시 크래시하지 않도록 지연 초기화
+let ai: GoogleGenAI | null = null;
 
-if (!API_KEY) {
-  throw new Error("API_KEY environment variable is not set.");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+const getClient = (): GoogleGenAI => {
+  // Vite는 VITE_ 접두사의 환경변수를 노출합니다.
+  const apiKey = (import.meta as any)?.env?.VITE_GEMINI_API_KEY as string | undefined;
+  if (!apiKey) {
+    // 앱 로드는 유지하고, 기능 사용 시점에만 에러 처리되도록 합니다.
+    throw new Error(
+      "Gemini API 키가 설정되어 있지 않습니다. 저장소 Secrets에 GEMINI_API_KEY를 추가하고 워크플로우에서 VITE_GEMINI_API_KEY로 전달해주세요."
+    );
+  }
+  if (!ai) {
+    ai = new GoogleGenAI({ apiKey });
+  }
+  return ai;
+};
 
 /**
  * Defines the structure for an image part sent to the Gemini API.
@@ -35,7 +45,7 @@ const generateSingleImage = async (
 ): Promise<string> => {
   const textPart = { text: `Using the person in the first image and the clothing in the second image, create a single realistic, high-quality image showing the person wearing the clothing. It should look like a professional virtual try-on photoshoot. The person's pose should be: ${prompt}. Ensure a neutral background.` };
 
-  const response: GenerateContentResponse = await ai.models.generateContent({
+  const response: GenerateContentResponse = await getClient().models.generateContent({
     model: 'gemini-2.5-flash-image-preview',
     contents: {
       parts: [personImagePart, clothingImagePart, textPart],
