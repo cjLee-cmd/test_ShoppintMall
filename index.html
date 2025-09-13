@@ -16,10 +16,11 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+<!-- Vite가 생성하는 자산을 base 경로 하위에서 로드하므로 절대경로 제거 -->
+<!-- 로컬에 index.css 파일이 없으므로 링크 제거 -->
 </head>
   <body class="bg-gray-100">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
