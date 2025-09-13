@@ -1,0 +1,5 @@
+{
+  "name": "피팅 솔루션 (Virtual Fitting Room)_v4",
+  "description": "고객의 사진과 옷 사진을 업로드하여 Gemini AI를 통해 가상으로 옷을 입어보는 웹 애플리케이션입니다. (A web application to virtually try on clothes using Gemini AI by uploading a customer's photo and a clothing photo.)",
+  "requestFramePermissions": []
+}
